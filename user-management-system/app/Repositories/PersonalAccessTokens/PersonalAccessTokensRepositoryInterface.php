@@ -1,0 +1,8 @@
+<?php
+namespace App\Repositories\PersonalAccessTokens;
+
+use App\Repositories\RepositoryInterface;
+
+interface PersonalAccessTokensRepositoryInterface extends RepositoryInterface{
+    public function findByUserToken($id, $tokenable_id, $tokenable_type);
+}
