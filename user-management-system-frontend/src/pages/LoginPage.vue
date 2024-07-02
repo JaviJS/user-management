@@ -76,6 +76,8 @@ const showPassword = ref(false);
 
 const { emailRule, requiredRule } = validationForms();
 
+const isValidForm = ref(false);
+
 const validateForm = () => {
   form.value.validate().then(({ valid: isValid }) => {
     if (isValid) {
@@ -84,8 +86,10 @@ const validateForm = () => {
         password: password.value,
       };
       store.dispatch("user/LOGIN", data);
+      isValidForm.value = true;
     } else {
       toast.error("Formulario inválido");
+      isValidForm.value = false;
     }
   });
 };
