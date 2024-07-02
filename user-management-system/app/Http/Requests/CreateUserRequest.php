@@ -22,16 +22,16 @@ class CreateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|alpha',
-            'last_name' => 'required|alpha',
+            'name' => 'required|alpha|min:3|max:30',
+            'last_name' => 'required|alpha|min:3|max:30',
             "email" => 'required|email|unique:users,email',
             "password" => 'required|confirmed|string|min:8|max:16',
             "password_confirmation" => 'required',
-            "phone" => 'required',
+            "phone" => 'required|numeric|digits:9',
             "birthday_date" => 'required|date_format:d-m-Y',
             "role" => 'required|in:admin,usuario',
             "status" => 'required|in:Activo,Inactivo',
-            'photo_user' => 'required|file|extensions:jpg,png'
+            'photo_user' => 'required|file|extensions:jpg,png,jpeg|max:10240'
         ];
     }
 
@@ -59,7 +59,7 @@ class CreateUserRequest extends FormRequest
             "password" => 'contraseña',
             "password_confirmation" => 'confirmar contraseña',
             "phone" => 'teléfono',
-            "birthday_date" => 'fecha de cumpleaños',
+            "birthday_date" => 'fecha de nacimiento',
             "role" => 'rol',
             "status" => 'estado',
             'photo_user' => 'foto de usuario'

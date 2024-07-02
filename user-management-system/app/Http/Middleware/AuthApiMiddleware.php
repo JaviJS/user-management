@@ -44,6 +44,11 @@ class AuthApiMiddleware
             $key = new Key($this->jwtSecret, 'HS256');
             $decoded_token = JWT::decode($current_token, $key);
             $userId = $decoded_token->sub;
+            $user = $this->userRepository->find($userId);
+
+            if(!$user || $user['status'] === "Inactivo"){
+                throw new Exception('Usuario no autorizado', 401);
+            }
             $jti = $decoded_token->jti;
             $personalAccessToken = $this->personalAccessTokensRepository->findByUserToken($jti->id, $userId, $jti->tokenable_type);
             if (!$personalAccessToken) {

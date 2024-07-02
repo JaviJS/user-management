@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UpdatePasswordRequest;
+use App\Repositories\PersonalAccessTokens\PersonalAccessTokensRepositoryInterface;
 use App\Repositories\PhotoUser\PhotoUserRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Helpers\HttpResponse;
@@ -19,10 +20,12 @@ class UserService
     use FileTrait;
     private $userRepository;
     private $photoUserRepository;
-    public function __construct(UserRepositoryInterface $userRepository, PhotoUserRepositoryInterface $photoUserRepository)
+    private $personalAccessTokensRepository;
+    public function __construct(UserRepositoryInterface $userRepository, PhotoUserRepositoryInterface $photoUserRepository, PersonalAccessTokensRepositoryInterface $personalAccessTokensRepository)
     {
         $this->userRepository = $userRepository;
         $this->photoUserRepository = $photoUserRepository;
+        $this->personalAccessTokensRepository = $personalAccessTokensRepository;
     }
 
     public function all()
@@ -133,7 +136,10 @@ class UserService
             if (!$user) {
                 throw new Exception('Error al eliminar el usuario', 500);
             }
-
+            $tokens = $this->personalAccessTokensRepository->deleteByUser($id_user);
+            if (!$tokens) {
+                throw new Exception('Error al eliminar tokens', 500);
+            }
             $users = $this->userRepository->all();
             return HttpResponse::response($users, 200);
         } catch (PDOException $error) {
