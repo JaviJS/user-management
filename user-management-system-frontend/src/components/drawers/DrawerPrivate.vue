@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer
     v-model="drawer"
-    :rail="$vuetify.display.xs ? false : props.rail"
+    :rail="$vuetify.display.xs ? false : props.openDrawer"
     :permanent="$vuetify.display.xs ? false : true"
   >
     <ListUserInfo :title="name" :subtitle="email" :img="photo_user" />
@@ -34,18 +34,25 @@ import { useRouter, useRoute } from "vue-router";
 import ListUserInfo from "../lists/ListUserInfo.vue";
 import { useStore } from "vuex";
 import { ref, watch, onMounted } from "vue";
-
-const props = defineProps(["rail", "items"]);
+import { useDisplay } from "vuetify";
+const router = useRouter();
 const store = useStore();
+const route = useRoute();
+const display = useDisplay();
+
+console.log(display.xs);
+
+const props = defineProps(["openDrawer", "items"]);
+
 const name = store.getters["user/GET_USER"].name;
 const email = store.getters["user/GET_USER"].email;
 const photo_user = store.getters["user/GET_PHOTO_USER"].url;
-const router = useRouter();
-const route = useRoute();
+
 const drawer = ref(true);
-// const rail = ref(true);
+const drawerSmall = ref(null);
+
 const selectedItem = ref("");
-console.log({ rail: props.rail });
+
 onMounted(async () => {
   const currentRoute = props.items.find((x) => x.to === route.path);
   selectedItem.value = currentRoute?.id ?? null;
@@ -58,26 +65,36 @@ const goToPage = (to) => {
 };
 const logout = () => {
   store.dispatch("user/LOGOUT");
-}
-watch(selectedItem, (newValue) => {
-  if (typeof newValue === "undefined") {
-    setTimeout(() => {
-      selectedItem.value = 0;
-    }, 500);
+};
+watch(
+  () => selectedItem.value,
+  (newValue) => {
+    if (typeof newValue === "undefined") {
+      setTimeout(() => {
+        selectedItem.value = 0;
+      }, 500);
+    }
   }
-});
+);
 // Watch route changes
 watch(route, (newPath) => {
   const currentRoute = props.items.find((x) => x.to === newPath.path);
   selectedItem.value = currentRoute?.id ?? null;
 });
 watch(
-  () => props.rail,
+  () => props.openDrawer,
   (newValue) => {
-    console.log(props.rail);
+    console.log("openDrawer:", props.openDrawer);
     // if (this.$vuetify.breakpoint.xsOnly) {
-    drawer.value = newValue;
+    // drawer.value = true;
     console.log(drawer.value);
+    // }
+  }
+);
+watch(
+  display.xs.value,
+  (newValue) => {
+    console.log("pantalla:", "new pantalla");
     // }
   }
 );

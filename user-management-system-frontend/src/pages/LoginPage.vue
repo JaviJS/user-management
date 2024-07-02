@@ -28,6 +28,9 @@
             <v-row no-gutters>
               <v-col cols="12" sm="12">
                 <v-text-field
+                  :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  @click:append="showPassword = !showPassword"
+                  :type="showPassword ? 'text' : 'password'"
                   v-model="password"
                   :rules="requiredRule('contraseña')"
                   label="Contraseña"
@@ -69,6 +72,7 @@ const toast = useToast();
 const form = ref(null);
 const email = ref("");
 const password = ref("");
+const showPassword = ref(false);
 
 const { emailRule, requiredRule } = validationForms();
 

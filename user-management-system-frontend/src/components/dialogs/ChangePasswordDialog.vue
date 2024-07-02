@@ -26,6 +26,9 @@
           <v-row justify="center">
             <v-col cols="12" sm="12">
               <v-text-field
+                :append-icon="showPassword1 ? 'mdi-eye' : 'mdi-eye-off'"
+                @click:append="showPassword1 = !showPassword1"
+                :type="showPassword1 ? 'text' : 'password'"
                 v-model="newPasswordUser.actualPassword"
                 :rules="requiredRule('contraseña actual')"
                 label="Contraseña actual"
@@ -35,6 +38,9 @@
           <v-row justify="center">
             <v-col cols="12" sm="12">
               <v-text-field
+                :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
+                @click:append="showPassword2 = !showPassword2"
+                :type="showPassword2 ? 'text' : 'password'"
                 v-model="newPasswordUser.newPassword"
                 :rules="
                   newPasswordRule(
@@ -49,6 +55,9 @@
           <v-row justify="center">
             <v-col cols="12" sm="12">
               <v-text-field
+                :append-icon="showPassword3 ? 'mdi-eye' : 'mdi-eye-off'"
+                @click:append="showPassword3 = !showPassword3"
+                :type="showPassword3 ? 'text' : 'password'"
                 v-model="newPasswordUser.newPasswordConfirmation"
                 :rules="
                   passwordMatchRule(
@@ -104,6 +113,9 @@ const user = ref({
   email: "",
   photoUser: null,
 });
+const showPassword1 = ref(false);
+const showPassword2 = ref(false);
+const showPassword3 = ref(false);
 
 const newPasswordUser = ref({
   actualPassword: "",

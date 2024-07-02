@@ -52,6 +52,9 @@
             <v-row justify="center">
               <v-col cols="12" sm="6">
                 <v-text-field
+                :append-icon="showPassword1 ? 'mdi-eye' : 'mdi-eye-off'"
+                @click:append="showPassword1 = !showPassword1"
+                :type="showPassword1 ? 'text' : 'password'"
                   v-model="user.password"
                   :rules="passwordRule('contraseña')"
                   label="Contraseña"
@@ -59,6 +62,9 @@
               </v-col>
               <v-col cols="12" sm="6">
                 <v-text-field
+                :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
+                @click:append="showPassword2 = !showPassword2"
+                :type="showPassword2 ? 'text' : 'password'"
                   v-model="user.passwordConfirmation"
                   :rules="
                     passwordMatchRule('confirme contraseña', user.password)
@@ -157,6 +163,8 @@ const user = ref({
   status: "",
   photoUser: null,
 });
+const showPassword1 = ref(false);
+const showPassword2 = ref(false);
 
 onMounted(async () => {
   await loadStatusUser();

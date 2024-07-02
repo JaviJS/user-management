@@ -18,10 +18,10 @@ const role = store.getters["user/GET_ROLE_USER"];
 const photo_user = store.getters["user/GET_PHOTO_USER"].url;
 
 const emit = defineEmits(['statusDrawer'])
-const rail = ref(true);
+const openDrawer = ref(true);
 const buttonClick = () => {
-  rail.value = !rail.value;
-  emit('status-drawer', rail)
+  openDrawer.value = !openDrawer.value;
+  emit('status-drawer', openDrawer.value)
 }
 </script>
 <style scoped lang="scss"></style>
