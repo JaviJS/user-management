@@ -4,7 +4,7 @@
     :rail="$vuetify.display.xs ? false : props.rail"
     :permanent="$vuetify.display.xs ? false : true"
   >
-    <ListUserInfo :title="name" :subtitle="role" :img="photo_user" />
+    <ListUserInfo :title="name" :subtitle="email" :img="photo_user" />
     <v-divider></v-divider>
     <v-list density="compact" nav>
       <v-list-item
@@ -38,7 +38,7 @@ import { ref, watch, onMounted } from "vue";
 const props = defineProps(["rail", "items"]);
 const store = useStore();
 const name = store.getters["user/GET_USER"].name;
-const role = store.getters["user/GET_ROLE_USER"];
+const email = store.getters["user/GET_USER"].email;
 const photo_user = store.getters["user/GET_PHOTO_USER"].url;
 const router = useRouter();
 const route = useRoute();

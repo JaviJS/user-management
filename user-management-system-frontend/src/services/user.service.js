@@ -3,11 +3,13 @@ import { API_URL } from "../helpers/_api";
 
 class UserService {
   async getUsers(token) {
-    return axios.get(API_URL + "users", {
-      headers: { Authorization: `Bearer ${token}` },
-    }).then((response) => {
-      return response.data;
-    });
+    return axios
+      .get(API_URL + "users", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        return response.data;
+      });
   }
 
   async createUser(data) {
@@ -17,18 +19,22 @@ class UserService {
   }
 
   async deleteUser(idUser, token) {
-    return axios.delete(API_URL + "users/" + idUser, {}, {
-      headers: { Authorization: `Bearer ${token}` },
-    }).then((response) => {
-      return response.data;
-    });
+    return axios
+      .delete(API_URL + "users/" + idUser, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        return response.data;
+      });
   }
-  async getUser(idUser) {
-    return axios.get(API_URL + "users/" + idUser, {},{
-      headers: { Authorization: `Bearer ${token}` },
-    }).then((response) => {
-      return response.data;
-    });
+  async getUser(idUser, token) {
+    return axios
+      .get(API_URL + "users/" + idUser, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        return response.data;
+      });
   }
   async editUser(data, idUser, token) {
     return axios

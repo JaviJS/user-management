@@ -1,11 +1,16 @@
-import { VDateInput } from 'vuetify/labs/VDateInput'
+import { VDateInput } from "vuetify/labs/VDateInput";
 import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
+import { es } from "vuetify/locale";
 
 import { createVuetify } from "vuetify";
 export default createVuetify({
+  locale: {
+    locale: "es",
+    messages: { es },
+  },
   components: {
-    VDateInput
+    VDateInput,
   },
   theme: {
     themes: {

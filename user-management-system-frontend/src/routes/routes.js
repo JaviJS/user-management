@@ -6,6 +6,13 @@ import PrivateRoutes from "../pages/private/routes";
 import Store from "../store/store";
 const routes = [
   {
+    path: "/",
+    redirect: "/login",
+    meta: {
+      requiresAuth: false,
+    },
+  },
+  {
     path: "/login",
     component: LoginPage,
     meta: {
@@ -13,7 +20,7 @@ const routes = [
     },
   },
   {
-    path: "/register",
+    path: "/registro",
     component: RegisterPage,
     meta: {
       requiresAuth: false,
@@ -52,7 +59,6 @@ router.beforeEach((to, from, next) => {
     }
   }
   next();
-  console.log("user", Store.state.user.user);
   return true;
 });
 export default router;

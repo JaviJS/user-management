@@ -57,6 +57,26 @@
                     ></v-img
                   ></v-avatar>
                 </template>
+                <template v-slot:item.actions="{ item }">
+                  <UpdateUserDialog
+                    @change-user="changeUsers()"
+                    :userId="item.id"
+                  ></UpdateUserDialog>
+                  <DeleteUserDialog
+                    @change-user="changeUsers()"
+                    :userId="item.id"
+                  ></DeleteUserDialog>
+                  <ChangePasswordDialog
+                    @change-user="changeUsers()"
+                    :userId="item.id"
+                  ></ChangePasswordDialog>
+                  <ViewUserDialog
+                    :userId="item.id"
+                  ></ViewUserDialog>
+                </template>
+                <template v-slot:no-data>
+                  No hay usuarios
+                </template>
               </v-data-table>
             </v-col>
           </v-row>
@@ -66,14 +86,27 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import ChangePasswordDialog from "../../../../components/dialogs/ChangePasswordDialog.vue";
+import UpdateUserDialog from "../../../../components/dialogs/UpdateUserDialog.vue";
+import DeleteUserDialog from "../../../../components/dialogs/DeleteUserDialog.vue";
+import ViewUserDialog from "../../../../components/dialogs/ViewUserDialog.vue";
 import userService from "./../../../../services/user.service";
+import { ref, onMounted, getCurrentInstance } from "vue";
+import { useToast } from "vue-toastification";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+
+const { appContext } = getCurrentInstance();
+const moment = appContext.config.globalProperties.$moment;
+
 const router = useRouter();
+const toast = useToast();
+const store = useStore();
+
 const users = ref([]);
 const searchUser = ref("");
 const loadingTable = ref(false);
+
 const headersTable = [
   { title: "ID", key: "id", align: "center" },
   {
@@ -95,8 +128,9 @@ const headersTable = [
   { title: "Estado", key: "status", align: "center" },
   { title: "Fecha de creación", key: "createdAt", align: "center" },
   { title: "Fecha de modificación", key: "updatedAt", align: "center" },
+  { title: "Acciones", key: "actions", sortable: false },
 ];
-const store = useStore();
+
 onMounted(async () => {
   await loadUsers();
 });
@@ -113,24 +147,33 @@ const loadUsers = async () => {
           name: x.name + " " + x.last_name,
           email: x.email,
           phone: x.phone,
-          birthdayDate: x.birthday_date,
+          birthdayDate: moment(new Date(x.birthday_date)).format("DD-MM-YYYY"),
           role: x.role,
           status: x.status,
-          createdAt: x.created_at,
-          updatedAt: x.updated_at,
+          createdAt: moment(new Date(x.created_at)).format(
+            "DD-MM-YYYY HH:mm:ss"
+          ),
+          updatedAt: moment(new Date(x.updated_at)).format(
+            "DD-MM-YYYY HH:mm:ss"
+          ),
           photoUser: x.photo_user?.url,
         };
       });
     })
     .catch((error) => {
+      toast.error("Error al listar usuarios.");
       if (error?.response?.status === 401) {
         store.dispatch("user/CLEAR_USER");
         router.push("/login");
-        console.log("No autorizado");
+        toast.error("No autorizado");
       }
     });
   loadingTable.value = false;
 };
+const changeUsers = async () => {
+  await loadUsers();
+};
+
 const goToCreateUser = () => {
   router.push("/private/crear-usuario");
 };

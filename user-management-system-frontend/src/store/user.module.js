@@ -1,6 +1,10 @@
 import authService from "../services/auth.service";
 import { useRouter } from "vue-router";
 import router from "../routes/routes";
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
+
 const userStore = {
   namespaced: true,
   state: {
@@ -51,11 +55,12 @@ const userStore = {
           commit("SET_USER", user.user);
           commit("SET_TOKEN", user.token);
           commit("SET_IS_AUTH", true);
-          router.push("/");
-          //   router.history.push("/");
+          router.push("/private");
+          toast.success("Inicio de sesión con éxito");
           return Promise.resolve(user);
         },
         (error) => {
+          toast.error("Error al iniciar sesión");
           return Promise.reject(error);
         }
       );
@@ -64,15 +69,14 @@ const userStore = {
       authService.logout(getters.GET_TOKEN).then(
         (data) => {
           commit("CLEAR_USER");
-          //   router.history.push("/login");
           router.push("/login");
+          toast.success("Cierre de sesión con éxito");
           return Promise.resolve(data);
         },
         (error) => {
-          console.log(error.response);
           commit("CLEAR_USER");
           router.push("/login");
-          //   router.history.push("/login");
+          toast.error("Error al cerrar sesión");
           return Promise.reject(error);
         }
       );

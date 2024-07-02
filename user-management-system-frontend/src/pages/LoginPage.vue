@@ -42,8 +42,6 @@
               </v-col>
             </v-row>
           </v-form>
-          {{ email }}
-          {{ password }}
           <v-row no-gutters>
             <v-col cols="12" sm="12">
               <p class="card__register_label">
@@ -61,12 +59,19 @@
 import { ref, watch, onMounted } from "vue";
 import { validationForms } from "../composables/validationForms.composables.js";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
+
+const store = useStore();
+const router = useRouter();
+const toast = useToast();
 
 const form = ref(null);
 const email = ref("");
 const password = ref("");
+
 const { emailRule, requiredRule } = validationForms();
-const store = useStore();
+
 const validateForm = () => {
   form.value.validate().then(({ valid: isValid }) => {
     if (isValid) {
@@ -76,16 +81,14 @@ const validateForm = () => {
       };
       store.dispatch("user/LOGIN", data);
     } else {
-      // La validación falló
-      console.log("Formulario inválido");
+      toast.error("Formulario inválido");
     }
   });
 };
 const goToRegister = () => {
-  console.log("goToRegister");
+  router.push("/registro");
 };
-onMounted(() => {
-});
+onMounted(() => {});
 </script>
 <style scoped lang="scss">
 .container {
