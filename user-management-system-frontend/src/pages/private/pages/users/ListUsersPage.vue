@@ -147,13 +147,13 @@ const loadUsers = async () => {
           name: x.name + " " + x.last_name,
           email: x.email,
           phone: x.phone,
-          birthdayDate: moment(new Date(x.birthday_date)).format("DD-MM-YYYY"),
+          birthdayDate: moment(x.birthday_date).format("DD-MM-YYYY"),
           role: x.role,
           status: x.status,
-          createdAt: moment(new Date(x.created_at)).format(
+          createdAt: moment(x.created_at).format(
             "DD-MM-YYYY HH:mm:ss"
           ),
-          updatedAt: moment(new Date(x.updated_at)).format(
+          updatedAt: moment(x.updated_at).format(
             "DD-MM-YYYY HH:mm:ss"
           ),
           photoUser: x.photo_user?.url,

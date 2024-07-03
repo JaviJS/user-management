@@ -10,12 +10,19 @@ export function validationForms() {
   const requiredDateRule = (text) => {
     return [
       (v) => !!v || `El campo ${text} es obligatorio.`,
-      (v) =>
-        (v && /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/.test(v)) ||
-        "Formato de fecha dd/mm/YYYY",
       (v) => {
-        var d = moment(v, "dd/mm/YYYY");
-        return d.isValid() || `El campo ${text} debe ser una fecha.`;
+        var date = moment(v).format("DD-MM-YYYY");
+        return (
+          (v &&
+            /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-(19|20)\d\d$/.test(
+              date
+            )) ||
+          "Formato de fecha dd-mm-YYYY"
+        );
+      },
+      (v) => {
+        var date = moment(v, "DD-MM-YYYY");
+        return date.isValid() || `El campo ${text} debe ser una fecha.`;
       },
     ];
   };
@@ -75,7 +82,7 @@ export function validationForms() {
   const fileRule = (text) => [
     (v) => v.length !== 0 || `El campo ${text} es obligatorio.`,
     (v) =>
-      (v && !(v[0].size > 10 * 1024 * 1024)) ||
+      (v && v.length > 0 && !(v[0].size > 10 * 1024 * 1024)) ||
       "El documento debe pesar menos que 10 MB!",
   ];
   const fileNoRequiredRule = () => [
