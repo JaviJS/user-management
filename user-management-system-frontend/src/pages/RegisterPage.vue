@@ -23,6 +23,7 @@
             <v-row justify="center" class="mt-8">
               <v-col cols="12" sm="6">
                 <v-text-field
+                  id="name"
                   v-model="user.name"
                   :rules="personRule('nombre')"
                   label="Nombre"
@@ -30,6 +31,7 @@
               </v-col>
               <v-col cols="12" sm="6">
                 <v-text-field
+                  id="lastName"
                   v-model="user.lastName"
                   :rules="personRule('apellido')"
                   label="Apellido"
@@ -39,6 +41,7 @@
             <v-row justify="center">
               <v-col cols="12" sm="6">
                 <v-text-field
+                  id="email"
                   v-model="user.email"
                   :rules="emailRule('correo electrónico')"
                   label="Correo electrónico"
@@ -46,6 +49,7 @@
               </v-col>
               <v-col cols="12" sm="6">
                 <v-text-field
+                  id="phone"
                   v-model="user.phone"
                   :rules="phoneRule('teléfono')"
                   label="Teléfono"
@@ -55,6 +59,7 @@
             <v-row justify="center">
               <v-col cols="12" sm="6">
                 <v-text-field
+                  id="password"
                   :append-icon="showPassword1 ? 'mdi-eye' : 'mdi-eye-off'"
                   @click:append="showPassword1 = !showPassword1"
                   :type="showPassword1 ? 'text' : 'password'"
@@ -65,6 +70,7 @@
               </v-col>
               <v-col cols="12" sm="6">
                 <v-text-field
+                  id="passwordConfirmation"
                   :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
                   @click:append="showPassword2 = !showPassword2"
                   :type="showPassword2 ? 'text' : 'password'"
@@ -79,6 +85,7 @@
             <v-row justify="center">
               <v-col cols="12" sm="6">
                 <v-text-field
+                  id="birthdayDate"
                   v-model="user.birthdayDate"
                   type="date"
                   label="Fecha de nacimiento"
@@ -100,6 +107,7 @@
             <v-row justify="center">
               <v-col cols="12" sm="6">
                 <v-select
+                  id="status"
                   v-model="user.status"
                   :items="statusUser"
                   label="Estado"
@@ -108,6 +116,7 @@
               </v-col>
               <v-col cols="12" sm="6">
                 <v-select
+                  id="role"
                   v-model="user.role"
                   :items="rolesUser"
                   label="Rol"

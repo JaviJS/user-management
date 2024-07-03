@@ -1,7 +1,7 @@
 <template>
-  <v-dialog v-model="dialog" max-width="800px">
+  <v-dialog id="modal" v-model="dialog" max-width="800px">
     <template v-slot:activator="{ props }">
-      <v-icon v-bind="props" class="me-2" size="small" @click="loadData()">
+      <v-icon id="openDialog" v-bind="props" class="me-2" size="small" @click="loadData()">
         mdi-pencil
       </v-icon>
     </template>
