@@ -23,10 +23,10 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('users/change-password/{id}', [UserController::class, 'changePassword']);
         Route::post('logout', [AuthController::class, 'logOut']);
     });
+    Route::post('users', [UserController::class, 'store']);
     Route::get('users/find/list-roles', [UserController::class, 'listRoles']);
     Route::get('users/find/list-status', [UserController::class, 'listStatus']);
     Route::post('login', [AuthController::class, 'logIn']);
-    Route::post('users', [UserController::class, 'store']);
 });
 
 Route::fallback(function (Request $request) {

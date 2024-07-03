@@ -66,9 +66,7 @@ class UserService
                     throw new Exception('Error al crear el foto del usuario', 500);
                 }
             }
-
-            $users = $this->userRepository->all();
-            return HttpResponse::response($users, 200);
+            return HttpResponse::response($user, 200);
         } catch (PDOException $error) {
             return HttpResponse::response(['error' => 'Error interno', 'code' => 500], 500);
         } catch (Exception $error) {
@@ -113,9 +111,7 @@ class UserService
                     throw new Exception('Error al crear foto del usuario', 500);
                 }
             }
-
-            $users = $this->userRepository->all();
-            return HttpResponse::response($users, 200);
+            return HttpResponse::response($user, 200);
         } catch (PDOException $error) {
             return HttpResponse::response(['error' => 'Error interno', 'code' => 500], 500);
         } catch (Exception $error) {
@@ -203,8 +199,7 @@ class UserService
                 throw new Exception('Error al actualizar contraseña', 500);
             }
 
-            $users = $this->userRepository->all();
-            return HttpResponse::response($users, 200);
+            return HttpResponse::response($user, 200);
         } catch (PDOException $error) {
             return HttpResponse::response(['error' => 'Error interno', 'code' => 500], 500);
         } catch (Exception $error) {

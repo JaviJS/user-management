@@ -17,6 +17,9 @@ use DomainException;
 use PDOException;
 use Exception;
 
+/**
+ * Middleware para autenticación y autorización de API usando JWT
+ */
 class AuthApiMiddleware
 {
     private $userRepository;
@@ -30,25 +33,33 @@ class AuthApiMiddleware
     }
 
     /**
-     * Handle an incoming request.
+     * Maneja una solicitud entrante.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handle(Request $request, Closure $next): Response
     {
         try {
+            // Validar la existencia del token en la request
             $current_token = $request->bearerToken();
             if (!$current_token) {
                 throw new Exception('No existe el token', 400);
             }
+
+            // Decodificar el token JWT
             $key = new Key($this->jwtSecret, 'HS256');
             $decoded_token = JWT::decode($current_token, $key);
             $userId = $decoded_token->sub;
             $user = $this->userRepository->find($userId);
 
-            if(!$user || $user['status'] === "Inactivo"){
+            // Verificamos que el usuario existe y esta activo.
+            if (!$user || $user['status'] === "Inactivo") {
                 throw new Exception('Usuario no autorizado', 401);
             }
+
+            // Obtener y verificar el token personal
             $jti = $decoded_token->jti;
             $personalAccessToken = $this->personalAccessTokensRepository->findByUserToken($jti->id, $userId, $jti->tokenable_type);
             if (!$personalAccessToken) {
@@ -58,6 +69,7 @@ class AuthApiMiddleware
             if (Carbon::parse($personalAccessToken->expires_at)->isPast()) {
                 throw new Exception('Token expirado', 401);
             }
+
             return $next($request);
         } catch (ExpiredException $e) {
             return response()->json(['error' => 'Token expirado', 'code' => 401], 401);
