@@ -44,4 +44,9 @@ class PersonalAccessTokensRepository implements PersonalAccessTokensRepositoryIn
     {
         return PersonalAccessTokens::where('tokenable_id', $tokenable_id)->delete();
     }
+
+    public function findTokensUser($tokenable_id)
+    {
+        return PersonalAccessTokens::where('tokenable_id', $tokenable_id)->get();
+    }
 }

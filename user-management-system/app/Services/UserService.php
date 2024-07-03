@@ -136,9 +136,12 @@ class UserService
             if (!$user) {
                 throw new Exception('Error al eliminar el usuario', 500);
             }
-            $tokens = $this->personalAccessTokensRepository->deleteByUser($id_user);
-            if (!$tokens) {
-                throw new Exception('Error al eliminar tokens', 500);
+            $tokens = $this->personalAccessTokensRepository->findTokensUser($id_user);
+            if (count($tokens) > 0) {
+                $tokens_delete = $this->personalAccessTokensRepository->deleteByUser($id_user);
+                if (!$tokens_delete) {
+                    throw new Exception('Error al eliminar tokens', 500);
+                }
             }
             $users = $this->userRepository->all();
             return HttpResponse::response($users, 200);
