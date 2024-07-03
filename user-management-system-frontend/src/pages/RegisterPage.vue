@@ -78,12 +78,13 @@
             </v-row>
             <v-row justify="center">
               <v-col cols="12" sm="6">
-                <v-date-input
+                <v-text-field
                   v-model="user.birthdayDate"
+                  type="date"
                   label="Fecha de nacimiento"
-                  placeholder="Formato mm/dd/YYYY"
+                  placeholder="mm-dd-YYYY"
                   :rules="requiredDateRule('fecha de nacimiento')"
-                ></v-date-input>
+                ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-file-input
