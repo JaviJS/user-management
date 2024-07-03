@@ -220,7 +220,6 @@ const clearForm = () => {
   formUser.value.resetValidation();
 };
 const validateFormUser = () => {
-  console.log(moment(user.value.birthdayDate).format("DD-MM-YYYY"));
   formUser.value.validate().then(({ valid: isValid }) => {
     if (isValid) {
       const formDataUser = new FormData();
