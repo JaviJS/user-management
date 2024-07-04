@@ -2,8 +2,8 @@
   <v-responsive class="border rounded" max-height="100%">
     <v-app>
       <AppBarPrivate @status-drawer="statusDrawer" />
-      <DrawerPrivate :items="items" :rail="rail" />
-      <v-main>
+      <DrawerPrivate :items="items" :openDrawer="openDrawer" />
+      <v-main class="bg-blue-grey-lighten-5">
         <v-container>
           <router-view></router-view>
         </v-container>
@@ -32,9 +32,9 @@ const items = ref([
     to: "/private/crear-usuario",
   },
 ]);
-const rail = ref(true);
+const openDrawer = ref(true);
 const statusDrawer = (value) => {
-  rail.value = value;
+  openDrawer.value = value;
 };
 </script>
 <style scoped></style>

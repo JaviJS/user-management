@@ -39,4 +39,14 @@ class PersonalAccessTokensRepository implements PersonalAccessTokensRepositoryIn
             ->first();
         return $personal_access_tokens;
     }
+
+    public function deleteByUser($tokenable_id)
+    {
+        return PersonalAccessTokens::where('tokenable_id', $tokenable_id)->delete();
+    }
+
+    public function findTokensUser($tokenable_id)
+    {
+        return PersonalAccessTokens::where('tokenable_id', $tokenable_id)->get();
+    }
 }

@@ -1,10 +1,16 @@
 <template>
   <v-navigation-drawer
     v-model="drawer"
-    :rail="$vuetify.display.xs ? false : props.rail"
-    :permanent="$vuetify.display.xs ? false : true"
+    :rail="!$vuetify.display.xs && props.openDrawer"
+    :permanent="!$vuetify.display.xs"
+    :tempory="$vuetify.display.xs"
   >
-    <ListUserInfo :title="name" :subtitle="role" :img="photo_user" />
+    <ListUserInfo
+      :title="name"
+      :subtitle="email"
+      :img="photo_user"
+      type="dark"
+    />
     <v-divider></v-divider>
     <v-list density="compact" nav>
       <v-list-item
@@ -34,18 +40,22 @@ import { useRouter, useRoute } from "vue-router";
 import ListUserInfo from "../lists/ListUserInfo.vue";
 import { useStore } from "vuex";
 import { ref, watch, onMounted } from "vue";
-
-const props = defineProps(["rail", "items"]);
-const store = useStore();
-const name = store.getters["user/GET_USER"].name;
-const role = store.getters["user/GET_ROLE_USER"];
-const photo_user = store.getters["user/GET_PHOTO_USER"].url;
+import { useDisplay } from "vuetify";
 const router = useRouter();
+const store = useStore();
 const route = useRoute();
+const display = useDisplay();
+
+const props = defineProps(["openDrawer", "items"]);
+
+const name = store.getters["user/GET_USER"].name;
+const email = store.getters["user/GET_USER"].email;
+const photo_user = store.getters["user/GET_PHOTO_USER"].url;
+
 const drawer = ref(true);
-// const rail = ref(true);
+
 const selectedItem = ref("");
-console.log({ rail: props.rail });
+
 onMounted(async () => {
   const currentRoute = props.items.find((x) => x.to === route.path);
   selectedItem.value = currentRoute?.id ?? null;
@@ -58,28 +68,30 @@ const goToPage = (to) => {
 };
 const logout = () => {
   store.dispatch("user/LOGOUT");
-}
-watch(selectedItem, (newValue) => {
-  if (typeof newValue === "undefined") {
-    setTimeout(() => {
-      selectedItem.value = 0;
-    }, 500);
+};
+watch(
+  () => selectedItem.value,
+  (newValue) => {
+    if (typeof newValue === "undefined") {
+      setTimeout(() => {
+        selectedItem.value = 0;
+      }, 500);
+    }
   }
-});
+);
 // Watch route changes
 watch(route, (newPath) => {
   const currentRoute = props.items.find((x) => x.to === newPath.path);
   selectedItem.value = currentRoute?.id ?? null;
 });
 watch(
-  () => props.rail,
+  () => props.openDrawer,
   (newValue) => {
-    console.log(props.rail);
-    // if (this.$vuetify.breakpoint.xsOnly) {
-    drawer.value = newValue;
-    console.log(drawer.value);
-    // }
+    drawer.value = display.xs.value ? newValue : true;
   }
 );
+watch(() => display.xs.value, (newValue) => {
+  drawer.value = newValue ? null : props.openDrawer;
+});
 </script>
 <style scoped lang="scss"></style>

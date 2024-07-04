@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UpdatePasswordRequest;
+use App\Repositories\PersonalAccessTokens\PersonalAccessTokensRepositoryInterface;
 use App\Repositories\PhotoUser\PhotoUserRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Helpers\HttpResponse;
@@ -19,12 +20,25 @@ class UserService
     use FileTrait;
     private $userRepository;
     private $photoUserRepository;
-    public function __construct(UserRepositoryInterface $userRepository, PhotoUserRepositoryInterface $photoUserRepository)
+    private $personalAccessTokensRepository;
+
+    /**
+     * Constructor de AuthService
+     *
+     * @param UserRepositoryInterface $userRepository
+     * @param PhotoUserRepositoryInterface $photoUserRepository
+     * @param PersonalAccessTokensRepositoryInterface $personalAccessTokensRepository
+     */
+    public function __construct(UserRepositoryInterface $userRepository, PhotoUserRepositoryInterface $photoUserRepository, PersonalAccessTokensRepositoryInterface $personalAccessTokensRepository)
     {
         $this->userRepository = $userRepository;
         $this->photoUserRepository = $photoUserRepository;
+        $this->personalAccessTokensRepository = $personalAccessTokensRepository;
     }
 
+    /**
+     * Obtener todos los usuarios
+     */
     public function all()
     {
         try {
@@ -36,6 +50,12 @@ class UserService
             return HttpResponse::response(['error' => $error->getMessage(), 'code' => $error->getCode()], $error->getCode());
         }
     }
+
+    /**
+     * Crear un nuevo usuario
+     *
+     * @param CreateUserRequest $request
+     */
     public function create(CreateUserRequest $request)
     {
         try {
@@ -45,6 +65,8 @@ class UserService
             if (!$user) {
                 throw new Exception('Error al crear el usuario', 500);
             }
+
+            // Verificar que exista una foto de usuario en el request y asi guardarla
             if ($request->has('photo_user') && $request->file('photo_user')) {
                 $file = $this->file_upload('resources/photo_user/', $request->file('photo_user'));
 
@@ -63,15 +85,20 @@ class UserService
                     throw new Exception('Error al crear el foto del usuario', 500);
                 }
             }
-
-            $users = $this->userRepository->all();
-            return HttpResponse::response($users, 200);
+            return HttpResponse::response($user, 200);
         } catch (PDOException $error) {
             return HttpResponse::response(['error' => 'Error interno', 'code' => 500], 500);
         } catch (Exception $error) {
             return HttpResponse::response(['error' => $error->getMessage(), 'code' => $error->getCode()], $error->getCode());
         }
     }
+
+    /**
+     * Actualizar un usuario existente
+     *
+     * @param UpdateUserRequest $request
+     * @param int $id_user
+     */
     public function update(UpdateUserRequest $request, $id_user)
     {
         try {
@@ -110,15 +137,19 @@ class UserService
                     throw new Exception('Error al crear foto del usuario', 500);
                 }
             }
-
-            $users = $this->userRepository->all();
-            return HttpResponse::response($users, 200);
+            return HttpResponse::response($user, 200);
         } catch (PDOException $error) {
             return HttpResponse::response(['error' => 'Error interno', 'code' => 500], 500);
         } catch (Exception $error) {
             return HttpResponse::response(['error' => $error->getMessage(), 'code' => $error->getCode()], $error->getCode());
         }
     }
+
+    /**
+     * Eliminar un usuario
+     *
+     * @param int $id_user
+     */
     public function delete($id_user)
     {
         try {
@@ -127,13 +158,25 @@ class UserService
             if (!$user) {
                 throw new Exception('Usuario no encontrado', 404);
             }
+
+            // Eliminar foto del usuario del servidor
             $photo_user = $user['photo_user'];
             $this->file_delete('resources/photo_user/', $photo_user['name']);
+
+            // Eliminar usuario de la bd
             $user = $this->userRepository->delete($id_user);
             if (!$user) {
                 throw new Exception('Error al eliminar el usuario', 500);
             }
 
+            // Eliminar los tokens de acceso del usuario
+            $tokens = $this->personalAccessTokensRepository->findTokensUser($id_user);
+            if (count($tokens) > 0) {
+                $tokens_delete = $this->personalAccessTokensRepository->deleteByUser($id_user);
+                if (!$tokens_delete) {
+                    throw new Exception('Error al eliminar tokens', 500);
+                }
+            }
             $users = $this->userRepository->all();
             return HttpResponse::response($users, 200);
         } catch (PDOException $error) {
@@ -142,6 +185,12 @@ class UserService
             return HttpResponse::response(['error' => $error->getMessage(), 'code' => $error->getCode()], $error->getCode());
         }
     }
+
+    /**
+     * Encontrar un usuario por su ID
+     *
+     * @param int $id_user
+     */
     public function find($id_user)
     {
         try {
@@ -156,6 +205,10 @@ class UserService
             return HttpResponse::response(['error' => $error->getMessage(), 'code' => $error->getCode()], $error->getCode());
         }
     }
+
+    /**
+     * Listar estados de los usuarios
+     */
     public function listStatus()
     {
         try {
@@ -165,6 +218,10 @@ class UserService
             return HttpResponse::response(['error' => $error->getMessage(), 'code' => $error->getCode()], $error->getCode());
         }
     }
+
+    /**
+     * Listar roles de los usuarios
+     */
     public function listRoles()
     {
         try {
@@ -175,27 +232,36 @@ class UserService
         }
     }
 
+    /**
+     * Cambiar contraseña de un usuario
+     * @param UpdateUserRequest $request
+     * @param int $id_user
+     */
     public function changePassword(UpdatePasswordRequest $request, $id_user)
     {
         try {
+            // Buscamos usuario
             $user = $this->userRepository->find($id_user);
             if (!$user) {
                 throw new Exception('Usuario no encontrado', 404);
             }
 
+            // Validamos contraseña que viene en request con la almacenada en la base de datos
             $validatePassword = Hash::check($request->actual_password, $user->password);
             if (!$validatePassword) {
                 throw new Exception('Contraseña no corresponde, no autorizado', 401);
             }
+
+            // Encriptamos nueva contraseña
             $user_change['password'] = Hash::make($request->new_password);
 
+            // Modificamos contraseña de usuario
             $user = $this->userRepository->update($user_change, $id_user);
             if (!$user) {
                 throw new Exception('Error al actualizar contraseña', 500);
             }
 
-            $users = $this->userRepository->all();
-            return HttpResponse::response($users, 200);
+            return HttpResponse::response($user, 200);
         } catch (PDOException $error) {
             return HttpResponse::response(['error' => 'Error interno', 'code' => 500], 500);
         } catch (Exception $error) {

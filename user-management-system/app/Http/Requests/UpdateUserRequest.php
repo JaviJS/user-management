@@ -23,14 +23,14 @@ class UpdateUserRequest extends FormRequest
     {
         $userId = $this->route('id');
         return [
-            'name' => 'required|alpha',
-            'last_name' => 'required|alpha',
+            'name' => 'required|alpha|min:3|max:30',
+            'last_name' => 'required|alpha|min:3|max:30',
             "email" => 'required|email|unique:users,email,'. $userId,
             "phone" => 'required',
             "birthday_date" => 'required|date_format:d-m-Y',
             "role" => 'required|in:admin,usuario',
             "status" => 'required|in:Activo,Inactivo',
-            'photo_user' => 'sometimes|file|extensions:jpg,png'
+            'photo_user' => 'sometimes|file|extensions:jpg,png|max:10240'
         ];
     }
 
@@ -56,7 +56,7 @@ class UpdateUserRequest extends FormRequest
             'last_name' => 'apellido',
             "email" => 'correo electrónico',
             "phone" => 'teléfono',
-            "birthday_date" => 'fecha de cumpleaños',
+            "birthday_date" => 'fecha de nacimiento',
             "role" => 'rol',
             "status" => 'estado',
             'photo_user' => 'foto de usuario'

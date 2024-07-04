@@ -1,11 +1,10 @@
 <template>
-  <v-app-bar :elevation="2">
+  <v-app-bar color="primary" :elevation="2">
     <template v-slot:prepend>
       <v-app-bar-nav-icon  @click="buttonClick()"></v-app-bar-nav-icon>
     </template>
-
     <v-app-bar-title>Sistema de gestión de usuarios</v-app-bar-title>
-    <ListUserInfo :title="name" :subtitle="role" :img="photo_user"/>
+    <ListUserInfo :title="name" :subtitle="role" :img="photo_user" type="light"/>
   </v-app-bar>
 </template>
 <script setup>
@@ -18,10 +17,10 @@ const role = store.getters["user/GET_ROLE_USER"];
 const photo_user = store.getters["user/GET_PHOTO_USER"].url;
 
 const emit = defineEmits(['statusDrawer'])
-const rail = ref(true);
+const openDrawer = ref(true);
 const buttonClick = () => {
-  rail.value = !rail.value;
-  emit('status-drawer', rail)
+  openDrawer.value = !openDrawer.value;
+  emit('status-drawer', openDrawer.value)
 }
 </script>
 <style scoped lang="scss"></style>

@@ -1,7 +1,11 @@
 <?php
 namespace App\Repositories;
 
-interface RepositoryInterface 
+/**
+ * Interface RepositoryInterface
+ * Define los métodos básicos que debe implementar cualquier repositorio en la aplicación.
+ */
+interface RepositoryInterface
 {
     public function all();
     public function create(array $data);

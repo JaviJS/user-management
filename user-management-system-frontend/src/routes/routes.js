@@ -6,14 +6,23 @@ import PrivateRoutes from "../pages/private/routes";
 import Store from "../store/store";
 const routes = [
   {
+    path: "/",
+    redirect: "/login",
+    meta: {
+      requiresAuth: false,
+    },
+  },
+  {
     path: "/login",
+    name: "Login",
     component: LoginPage,
     meta: {
       requiresAuth: false,
     },
   },
   {
-    path: "/register",
+    path: "/registro",
+    name: "Register",
     component: RegisterPage,
     meta: {
       requiresAuth: false,
@@ -35,24 +44,30 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+// Guardian global antes de cada navegación
 router.beforeEach((to, from, next) => {
+  // Verifica si alguna de las rutas coincidentes requiere autenticación
   const authRequired = to.matched.some((m) => m.meta.requiresAuth);
+
+  // Obtiene el usuario del estado del store
   const user = Store.state.user.user;
+
+  // Si la ruta requiere autenticación
   if (authRequired) {
+    // Si no hay un usuario autenticado, redirige a la página de login
     if (!user) {
       next({ name: "Login" });
-    } else {
-      next();
     }
-  }else{
-    if(user){
-      next({name: "Private"})
-    }else{
-      next()
+  } else {
+    // Si la ruta no requiere autenticación
+
+    // Si hay un usuario autenticado, redirige a la página privada
+    if (user) {
+      next({ name: "Private" });
     }
   }
   next();
-  console.log("user", Store.state.user.user);
   return true;
 });
 export default router;

@@ -1,5 +1,5 @@
 <template>
-  <v-list>
+  <v-list :class="type === 'light' ? 'list_light' : 'list_dark'">
     <v-list-item
       :prepend-avatar="props.img"
       :subtitle="props.subtitle"
@@ -9,6 +9,12 @@
   </v-list>
 </template>
 <script setup>
-const props = defineProps(["title", "subtitle", "img"]);
+const props = defineProps(["title", "subtitle", "img", "type"]);
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.list_light {
+  background-color: rgb(24, 103, 192);
+  color: white;
+}
+
+</style>
