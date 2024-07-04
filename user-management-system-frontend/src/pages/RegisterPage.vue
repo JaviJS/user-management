@@ -1,6 +1,6 @@
 <template>
   <div id="CreateUserPage" class="bg-surface-variant" style="height: 100vh">
-    <v-row justify="center" class="mt-8 pa-5">
+    <v-row justify="center" class="pa-5">
       <v-col cols="12" md="12" sm="12" class="text-left">
         <v-card>
           <v-row>
