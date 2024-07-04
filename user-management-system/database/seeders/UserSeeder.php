@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
         $userAdmin->name = 'Usuario';
         $userAdmin->last_name = 'Prueba';
         $userAdmin->email = 'javivimi14@gmail.com';
-        $userAdmin->password = 'sigati14';
+        $userAdmin->password = 'Goals123*';
         $userAdmin->phone = '954739328';
         $userAdmin->birthday_date = Carbon::parse('24-02-1997');
         $userAdmin->role = 'admin';
