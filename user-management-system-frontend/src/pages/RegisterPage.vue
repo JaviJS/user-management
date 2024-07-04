@@ -111,6 +111,7 @@
               <v-col cols="12" sm="6">
                 <v-select
                   id="status"
+                  ref="status"
                   v-model="user.status"
                   :items="statusUser"
                   label="Estado"
@@ -120,6 +121,7 @@
               <v-col cols="12" sm="6">
                 <v-select
                   id="role"
+                  ref="role"
                   v-model="user.role"
                   :items="rolesUser"
                   label="Rol"

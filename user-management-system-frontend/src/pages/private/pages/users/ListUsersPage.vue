@@ -42,11 +42,11 @@
                 :search="searchUser"
                 :loading="loadingTable"
                 loading-text="Cargando... Porfavor esperar!"
-                :custom-filter="customFilter"
                 :footer-props="{
                   'items-per-page-options': [10, 50, 100],
                 }"
                 :items-per-page="50"
+                ref="dataTable"
               >
                 <template v-slot:[`item.photoUser`]="{ item }">
                   <v-avatar color="surface-variant"

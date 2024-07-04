@@ -33,6 +33,7 @@
                 v-model="newPasswordUser.actualPassword"
                 :rules="requiredRule('contraseña actual')"
                 label="Contraseña actual"
+                ref="actualPassword"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -50,6 +51,7 @@
                   )
                 "
                 label="Nueva contraseña"
+                ref="newPassword"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -67,6 +69,7 @@
                   )
                 "
                 label="Confirme nueva contraseña"
+                ref="newPasswordConfirmation"
               ></v-text-field>
             </v-col>
           </v-row>

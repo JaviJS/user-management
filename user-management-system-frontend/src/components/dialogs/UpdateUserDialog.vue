@@ -17,6 +17,7 @@
                 v-model="user.name"
                 :rules="personRule('nombre')"
                 label="Nombre"
+                ref="name"
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="6">
@@ -24,6 +25,7 @@
                 v-model="user.lastName"
                 :rules="personRule('apellido')"
                 label="Apellido"
+                ref="lastName"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -33,6 +35,7 @@
                 v-model="user.email"
                 :rules="emailRule('correo electrónico')"
                 label="Correo electrónico"
+                ref="email"
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="6">
@@ -40,6 +43,7 @@
                 v-model="user.phone"
                 :rules="phoneRule('teléfono')"
                 label="Teléfono"
+                ref="phone"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -51,6 +55,7 @@
                 label="Fecha de nacimiento"
                 placeholder="mm-dd-YYYY"
                 :rules="requiredDateRule('fecha de nacimiento')"
+                ref="birthdayDate"
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="6">
@@ -81,6 +86,7 @@
                 :items="statusUser"
                 label="Estado"
                 :rules="formGroupRule2('estado')"
+                ref="status"
               ></v-select>
             </v-col>
             <v-col cols="12" sm="6">
@@ -89,6 +95,7 @@
                 :items="rolesUser"
                 label="Rol"
                 :rules="formGroupRule2('rol')"
+                ref="role"
               ></v-select>
             </v-col>
           </v-row>
@@ -323,6 +330,8 @@ const clearForm = async () => {
   user.value.photoUser = null;
   fileUpload.value = null;
   formUser.value.resetValidation();
+
+  console.log(store);
   await loadUser();
 };
 

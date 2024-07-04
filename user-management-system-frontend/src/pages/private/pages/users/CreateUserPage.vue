@@ -23,6 +23,7 @@
                   v-model="user.name"
                   :rules="personRule('nombre')"
                   label="Nombre"
+                  ref="name"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
@@ -30,6 +31,7 @@
                   v-model="user.lastName"
                   :rules="personRule('apellido')"
                   label="Apellido"
+                  ref="lastName"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -39,6 +41,7 @@
                   v-model="user.email"
                   :rules="emailRule('correo electrónico')"
                   label="Correo electrónico"
+                  ref="email"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
@@ -46,6 +49,7 @@
                   v-model="user.phone"
                   :rules="phoneRule('teléfono')"
                   label="Teléfono"
+                  ref="phone"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -58,6 +62,7 @@
                   v-model="user.password"
                   :rules="passwordRule('contraseña')"
                   label="Contraseña"
+                  ref="password"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
@@ -70,6 +75,7 @@
                     passwordMatchRule('confirme contraseña', user.password)
                   "
                   label="Confirme contraseña"
+                  ref="passwordConfirmation"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -81,6 +87,7 @@
                   label="Fecha de nacimiento"
                   placeholder="mm-dd-YYYY"
                   :rules="requiredDateRule('fecha de nacimiento')"
+                  ref="birthdayDate"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
@@ -101,6 +108,7 @@
                   :items="statusUser"
                   label="Estado"
                   :rules="formGroupRule2('estado')"
+                  ref="status"
                 ></v-select>
               </v-col>
               <v-col cols="12" sm="6">
@@ -109,6 +117,7 @@
                   :items="rolesUser"
                   label="Rol"
                   :rules="formGroupRule2('rol')"
+                  ref="role"
                 ></v-select>
               </v-col>
             </v-row>

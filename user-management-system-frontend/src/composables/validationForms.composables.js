@@ -1,8 +1,8 @@
 import { getCurrentInstance } from "vue";
+import moment from "moment";
 
 export function validationForms() {
   const { appContext } = getCurrentInstance();
-  const moment = appContext.config.globalProperties.$moment;
 
   const requiredRule = (text) => [
     (v) => !!v || `El campo ${text} es obligatorio.`,
