@@ -3,7 +3,7 @@
     <v-app>
       <AppBarPrivate @status-drawer="statusDrawer" />
       <DrawerPrivate :items="items" :openDrawer="openDrawer" />
-      <v-main>
+      <v-main class="bg-blue-grey-lighten-5">
         <v-container>
           <router-view></router-view>
         </v-container>

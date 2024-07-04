@@ -173,6 +173,9 @@ const loadData = async () => {
   await loadRolesUser();
 };
 
+/** 
+* Método para cargar una imagen
+*/
 const handleFileChange = (event) => {
   const file = event.target.files[0];
   if (file) {
@@ -184,6 +187,9 @@ const handleFileChange = (event) => {
   }
 };
 
+/** 
+* Método para cargar los estados que puede tener un usuario
+*/
 const loadStatusUser = async () => {
   await userService
     .getStatus()
@@ -195,6 +201,9 @@ const loadStatusUser = async () => {
     });
 };
 
+/** 
+* Método para cargar los roles que puede tener un usuario
+*/
 const loadRolesUser = async () => {
   await userService
     .getRoles()
@@ -206,6 +215,10 @@ const loadRolesUser = async () => {
     });
 };
 
+/** 
+* Método para cargar información del usuario seleccionado
+* Llama al servicio userService y realiza una consulta get para obtener la información del usuario
+*/
 const loadUser = async () => {
   const token = store.getters["user/GET_TOKEN"];
   await userService
@@ -233,6 +246,13 @@ const loadUser = async () => {
     });
 };
 
+/**
+ * Función para validar y enviar el formulario de modificar un usuario.
+ * Valida el formulario usando las reglas definidas.
+ * Si el formulario es válido, crea un objeto FormData con los datos del usuario
+ * y llama a la función para guardar el usuario.
+ * Si la validación falla, muestra un mensaje de error.
+ */
 const saveUser = () => {
   formUser.value.validate().then(async ({ valid: isValid }) => {
     if (isValid) {
@@ -258,6 +278,13 @@ const saveUser = () => {
   });
 };
 
+/**
+ * Función asincrónica para modificar un usuario.
+ * Llama al servicio userService para enviar los datos proporcionados.
+ * Si la modificación es exitosa, limpia el formulario, muestra un mensaje de éxito
+ * Si ocurre un error, muestra un mensaje de error.
+ * @param {FormData} data - Los datos del usuario a enviar al servidor.
+ */
 const updateUser = async (data) => {
   const token = store.getters["user/GET_TOKEN"];
   const userSession = store.getters["user/GET_USER"];
@@ -284,6 +311,9 @@ const updateUser = async (data) => {
     });
 };
 
+/**
+ * Método para limpiar el formulario y cargar la nueva información del usuario en el.
+ */
 const clearForm = async () => {
   formUser.value.items.forEach((input) => {
     if (input.id !== "fileInput") {

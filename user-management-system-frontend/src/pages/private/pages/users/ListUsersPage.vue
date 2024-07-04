@@ -4,9 +4,9 @@
       <v-col cols="12" md="12" sm="12" class="text-left">
         <v-card>
           <v-row>
-            <v-col cols="12">
+            <v-col cols="12" class="d-flex justify-end">
               <v-card-title class="custom-text pl-10 pr-10">
-                <v-btn density="default" @click="goToCreateUser()"
+                <v-btn density="default" color="primary" @click="goToCreateUser()"
                   >+ Crear usuario</v-btn
                 >
               </v-card-title>
@@ -135,6 +135,14 @@ onMounted(async () => {
   await loadUsers();
 });
 
+/**
+ * Función asincrónica para cargar la lista de usuarios desde el servidor.
+ * Obtiene el token de autenticación del store.
+ * Muestra un indicador de carga mientras se obtienen los datos.
+ * Llama al servicio userService para obtener la lista de usuarios.
+ * Procesa los datos recibidos y los asigna a la variable users.
+ * Maneja errores durante la solicitud, mostrando mensajes de error
+ */
 const loadUsers = async () => {
   const token = store.getters["user/GET_TOKEN"];
   loadingTable.value = true;

@@ -8,7 +8,6 @@ const vuexLocalStorage = new VuexPersist({
 });
 
 const store = createStore({
-//   strict: process.env.NODE_ENV !== "production",
   modules: {
     user,
   },

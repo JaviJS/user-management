@@ -19,6 +19,7 @@
               :title="user.name"
               :subtitle="user.email"
               :img="user.photoUser"
+              type="dark"
             />
           </v-container>
         </v-card-text>
@@ -127,6 +128,10 @@ const loadData = async () => {
   await loadUser();
 };
 
+/** 
+* Método para cargar información del usuario seleccionado
+* Llama al servicio userService y realiza una consulta get para obtener la información del usuario
+*/
 const loadUser = async () => {
   const token = store.getters["user/GET_TOKEN"];
   await userService
@@ -148,6 +153,11 @@ const loadUser = async () => {
     });
 };
 
+/** 
+* Método para validar el formulario para ingresar una contraseña.
+* Si formulario es válido, se ejecutara el método changePassword
+* En caso de formulario inválido, se mostrara un mensaje
+*/
 const saveNewPassword = () => {
   formChangePassword.value.validate().then(async ({ valid: isValid }) => {
     if (isValid) {
@@ -164,6 +174,15 @@ const saveNewPassword = () => {
     }
   });
 };
+
+/**
+ * Función asincrónica para cambiar la contraseña de un usuario.
+ * Utiliza el token de autenticación obtenido del store.
+ * Llama al servicio userService para enviar los datos de cambio de contraseña al servidor.
+ * Maneja la respuesta exitosa mostrando un mensaje de éxito, emitiendo un evento "change-user" para actualizar la tabla de usuarios
+ * Maneja los errores mostrando un mensaje de error en caso de fallo.
+ * @param {object} data - Los datos necesarios para cambiar la contraseña del usuario.
+ */
 const changePassword = async (data) => {
   const token = store.getters["user/GET_TOKEN"];
   await userService
@@ -177,6 +196,9 @@ const changePassword = async (data) => {
       toast.error("Error al modificar contraseña");
     });
 };
+/**
+ * Método para limpiar el formulario
+ */
 const clearForm = async () => {
   formChangePassword.value.reset();
   formChangePassword.value.resetValidation();

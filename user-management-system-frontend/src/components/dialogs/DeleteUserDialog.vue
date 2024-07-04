@@ -18,6 +18,7 @@
             :title="user.name"
             :subtitle="user.email"
             :img="user.photoUser"
+            type="dark"
           />
         </v-container>
       </v-card-text>
@@ -65,6 +66,10 @@ const loadData = async () => {
   await loadUser();
 };
 
+/** 
+* Método para cargar información del usuario seleccionado
+* Llama al servicio userService y realiza una consulta get para obtener la información del usuario
+*/
 const loadUser = async () => {
   const token = store.getters["user/GET_TOKEN"];
   await userService
@@ -86,6 +91,13 @@ const loadUser = async () => {
     });
 };
 
+/**
+ * Función asincrónica para eliminar un usuario.
+ * Utiliza el token de autenticación obtenido del store.
+ * Llama al servicio userService para eliminar al usuario del servidor.
+ * Maneja la respuesta exitosa mostrando un mensaje de éxito, emitiendo un evento "change-user" para actualizar la tabla de usuarios
+ * Maneja los errores mostrando un mensaje de error en caso de fallo.
+ */
 const deleteUser = async () => {
   const token = store.getters["user/GET_TOKEN"];
   const userSession = store.getters["user/GET_USER"];

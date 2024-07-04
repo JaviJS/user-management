@@ -102,6 +102,10 @@ const loadData = async () => {
   await loadUser();
 };
 
+/** 
+* Método para cargar información del usuario seleccionado
+* Llama al servicio userService y realiza una consulta get para obtener la información del usuario
+*/
 const loadUser = async () => {
   const token = store.getters["user/GET_TOKEN"];
   await userService

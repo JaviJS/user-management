@@ -1,14 +1,17 @@
 <template>
-  <div id="CreateUserPage" class="mt-10 custom-size-page">
+  <div id="CreateUserPage" class="bg-surface-variant" style="height: 100vh">
     <v-row justify="center" class="mt-8 pa-5">
       <v-col cols="12" md="12" sm="12" class="text-left">
         <v-card>
           <v-row>
             <v-col cols="12">
               <v-card-title class="custom-text pl-10 pr-10">
-                <v-icon size="small" @click="goToLogin()"
-                  >mdi-arrow-left</v-icon
-                >
+                <v-btn
+                  density="comfortable"
+                  icon="mdi-arrow-left"
+                  variant="plain"
+                  @click="goToLogin()"
+                ></v-btn>
                 Registrar usuario
               </v-card-title>
             </v-col>
@@ -125,8 +128,13 @@
               </v-col>
             </v-row>
             <v-row justify="center">
-              <v-col cols="12">
-                <v-btn class="me-4" type="submit" @click="validateFormUser">
+              <v-col cols="12" class="d-flex justify-center">
+                <v-btn
+                  color="primary"
+                  class="me-4"
+                  type="submit"
+                  @click="validateFormUser"
+                >
                   Guardar
                 </v-btn>
                 <v-btn @click="clearForm"> Limpiar </v-btn>
@@ -182,6 +190,7 @@ const showPassword1 = ref(false);
 const showPassword2 = ref(false);
 
 onMounted(async () => {
+  // Cargamos desde la base de datos los estados y roles que puede tener un usuario
   await loadStatusUser();
   await loadRolesUser();
 });
@@ -207,6 +216,15 @@ const loadRolesUser = async () => {
       toast.error("Error al listar roles de usuario");
     });
 };
+
+/**
+ * Función asincrónica para crear un nuevo usuario.
+ * Llama al servicio userService para enviar los datos proporcionados.
+ * Si la creación es exitosa, limpia el formulario, muestra un mensaje de éxito
+ * y redirige al usuario a la página de inicio de sesión.
+ * Si ocurre un error, muestra un mensaje de error.
+ * @param {FormData} data - Los datos del usuario a enviar al servidor.
+ */
 const createUser = async (data) => {
   await userService
     .createUser(data)
@@ -219,6 +237,12 @@ const createUser = async (data) => {
       toast.error("Error al listar roles de usuario");
     });
 };
+/**
+ * Función para limpiar el formulario de usuario.
+ * Resetea los valores de todos los campos del formulario excepto el de carga de archivo.
+ * Limpia la foto del usuario y el archivo cargado.
+ * Resetea la validación del formulario.
+ */
 const clearForm = () => {
   formUser.value.items.forEach((input) => {
     if (input.id !== "fileInput") {
@@ -229,6 +253,14 @@ const clearForm = () => {
   fileUpload.value = null;
   formUser.value.resetValidation();
 };
+
+/**
+ * Función para validar y enviar el formulario de usuario.
+ * Valida el formulario usando las reglas definidas.
+ * Si el formulario es válido, crea un objeto FormData con los datos del usuario
+ * y llama a la función para crear un nuevo usuario.
+ * Si la validación falla, muestra un mensaje de error.
+ */
 const validateFormUser = () => {
   formUser.value.validate().then(({ valid: isValid }) => {
     if (isValid) {

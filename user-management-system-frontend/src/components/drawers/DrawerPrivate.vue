@@ -4,7 +4,12 @@
     :rail="$vuetify.display.xs ? false : props.openDrawer"
     :permanent="$vuetify.display.xs ? false : true"
   >
-    <ListUserInfo :title="name" :subtitle="email" :img="photo_user" />
+    <ListUserInfo
+      :title="name"
+      :subtitle="email"
+      :img="photo_user"
+      type="dark"
+    />
     <v-divider></v-divider>
     <v-list density="compact" nav>
       <v-list-item
@@ -91,12 +96,9 @@ watch(
     // }
   }
 );
-watch(
-  display.xs.value,
-  (newValue) => {
-    console.log("pantalla:", "new pantalla");
-    // }
-  }
-);
+watch(display.xs.value, (newValue) => {
+  console.log("pantalla:", "new pantalla");
+  // }
+});
 </script>
 <style scoped lang="scss"></style>

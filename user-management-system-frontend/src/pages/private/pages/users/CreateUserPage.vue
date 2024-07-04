@@ -52,9 +52,9 @@
             <v-row justify="center">
               <v-col cols="12" sm="6">
                 <v-text-field
-                :append-icon="showPassword1 ? 'mdi-eye' : 'mdi-eye-off'"
-                @click:append="showPassword1 = !showPassword1"
-                :type="showPassword1 ? 'text' : 'password'"
+                  :append-icon="showPassword1 ? 'mdi-eye' : 'mdi-eye-off'"
+                  @click:append="showPassword1 = !showPassword1"
+                  :type="showPassword1 ? 'text' : 'password'"
                   v-model="user.password"
                   :rules="passwordRule('contraseña')"
                   label="Contraseña"
@@ -62,9 +62,9 @@
               </v-col>
               <v-col cols="12" sm="6">
                 <v-text-field
-                :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
-                @click:append="showPassword2 = !showPassword2"
-                :type="showPassword2 ? 'text' : 'password'"
+                  :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
+                  @click:append="showPassword2 = !showPassword2"
+                  :type="showPassword2 ? 'text' : 'password'"
                   v-model="user.passwordConfirmation"
                   :rules="
                     passwordMatchRule('confirme contraseña', user.password)
@@ -75,7 +75,13 @@
             </v-row>
             <v-row justify="center">
               <v-col cols="12" sm="6">
-                <v-text-field v-model="user.birthdayDate" type="date" label="Fecha de nacimiento" placeholder="mm-dd-YYYY" :rules="requiredDateRule('fecha de nacimiento')"></v-text-field>
+                <v-text-field
+                  v-model="user.birthdayDate"
+                  type="date"
+                  label="Fecha de nacimiento"
+                  placeholder="mm-dd-YYYY"
+                  :rules="requiredDateRule('fecha de nacimiento')"
+                ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-file-input
@@ -107,8 +113,13 @@
               </v-col>
             </v-row>
             <v-row justify="center">
-              <v-col cols="12">
-                <v-btn class="me-4" type="submit" @click="validateFormUser">
+              <v-col cols="12" class="d-flex justify-center">
+                <v-btn
+                  color="primary"
+                  class="me-4"
+                  type="submit"
+                  @click="validateFormUser"
+                >
                   Guardar
                 </v-btn>
                 <v-btn @click="clearForm"> Limpiar </v-btn>
@@ -162,6 +173,7 @@ const showPassword1 = ref(false);
 const showPassword2 = ref(false);
 
 onMounted(async () => {
+  // Cargamos desde la base de datos los estados y roles que puede tener un usuario
   await loadStatusUser();
   await loadRolesUser();
 });

@@ -3,15 +3,10 @@
     class="bg-surface-variant container d-flex justify-center align-center"
   >
     <v-card class="card">
-      <v-row class="pa-5">
+      <v-row class="pa-10">
         <v-col cols="12" sm="12">
-          <v-row no-gutters>
-            <v-col cols="12" sm="12" class="card__avatar">
-              <v-img :width="180" cover src="../assets/icons/nina.png"></v-img>
-            </v-col>
-          </v-row>
-          <v-row no-gutters>
-            <v-col cols="12" sm="12">
+          <v-row no-gutters class="mt-5 mb-5">
+            <v-col cols="12" sm="12" class="d-flex justify-center">
               <div class="text-h5">Iniciar Sesión</div>
             </v-col>
           </v-row>
@@ -39,17 +34,17 @@
             </v-row>
             <v-row no-gutters>
               <v-col cols="12" sm="12">
-                <v-btn class="mt-2" type="submit" block @click="validateForm"
+                <v-btn color="primary" class="mt-2" type="submit" block @click="validateForm"
                   >Submit</v-btn
                 >
               </v-col>
             </v-row>
           </v-form>
-          <v-row no-gutters>
-            <v-col cols="12" sm="12">
-              <p class="card__register_label">
+          <v-row no-gutters class="mt-5 mb-5">
+            <v-col cols="12" sm="12" class="d-flex justify-center">
+              <p>
                 ¿No tienes cuenta?
-                <span @click="goToRegister()">Registrate aquí</span>
+                <span style="color: rgb(24, 103, 192);" @click="goToRegister()">Registrate aquí</span>
               </p>
             </v-col>
           </v-row>
@@ -74,17 +69,20 @@ const email = ref("");
 const password = ref("");
 const showPassword = ref(false);
 
+// Reglas de validación para el formulario
 const { emailRule, requiredRule } = validationForms();
 
 const isValidForm = ref(false);
 
 const validateForm = () => {
+  //Validamos el formulario
   form.value.validate().then(({ valid: isValid }) => {
     if (isValid) {
       const data = {
         email: email.value,
         password: password.value,
       };
+      // Si el email es verdadero realizamos el metodo LOGIN que esta en el store de usuario
       store.dispatch("user/LOGIN", data);
       isValidForm.value = true;
     } else {
