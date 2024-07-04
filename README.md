@@ -17,3 +17,8 @@ Para detener y eliminar todos los contenedores asociados al proyecto, utiliza el
 ```
 docker-compose down
 ```
+
+Ingresar en sitio
+```
+localhost:8001/
+```
