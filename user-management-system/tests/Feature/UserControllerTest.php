@@ -5,15 +5,15 @@ namespace Tests\Feature;
 use App\Models\PhotoUser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use App\Traits\FileTrait;
 
 class UserControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use FileTrait;
     /**
      * Indicates whether the default seeder should run before each test.
      *
@@ -26,7 +26,10 @@ class UserControllerTest extends TestCase
      */
     public function test_create_user(): void
     {
+        // Creamos una imagen falsa
         $file = UploadedFile::fake()->image('avatar.jpg');
+
+        // Creamos la data del usuario que queremos crear
         $user = [
             'name' => 'prueba',
             'last_name' => 'dos',
@@ -39,7 +42,11 @@ class UserControllerTest extends TestCase
             'status' => 'Activo',
             'photo_user' => $file
         ];
+
+        // Enviamos la data por la consulta a la api
         $response = $this->postJson('/api/v1/users', $user);
+
+        // Esperamos que sea una respuesta 200
         $response->assertOk();
 
         $response->assertJsonFragment([
@@ -52,6 +59,29 @@ class UserControllerTest extends TestCase
             'role' => 'usuario',
             'status' => 'Activo'
         ]);
+
+
+        $auth = [
+            "email" => $user['email'],
+            "password" => 'Goal123*'
+        ];
+        // Iniciamos sesión
+        $response2 = $this->postJson('/api/v1/login', $auth);
+
+        $response2->assertOk();
+
+        // Obtenemos el token
+        $authorization = $response2['authorization'];
+
+        // Obtenemos la información del ultimo usuario creamo
+        $response3 = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $authorization['token']
+        ])->getJson('/api/v1/users/' . $response['id']);
+
+        $response3->assertOk();
+
+        // Borramos imagen del servidor de usuario de prueba creado
+        $this->file_delete('resources/photo_user/', $response3['photo_user']['name']);
     }
 
     /**
@@ -226,8 +256,6 @@ class UserControllerTest extends TestCase
 
         $authorization = $responseLogin['authorization'];
 
-        //Creamos data que enviaremos para modificar contraseña de usuario
-
         $route = '/api/v1/logout';
 
         //Realizamos la solicitud post con autenticación
@@ -283,11 +311,9 @@ class UserControllerTest extends TestCase
 
         $authorization = $responseLogin['authorization'];
 
-        //Creamos data que enviaremos para modificar contraseña de usuario
-
         $route = '/api/v1/users/' . $user['id'];
 
-        //Realizamos la solicitud post con autenticación
+        //Realizamos la solicitud delete con autenticación 
         $response = $this->withHeaders([
             'Authorization' => "Bearer " . $authorization['token']
         ])->deleteJson($route);
@@ -301,6 +327,7 @@ class UserControllerTest extends TestCase
      */
     public function test_login(): void
     {
+        //Creamos a usuario y su foto de usuario
         $user = User::create(
             [
                 'name' => 'prueba',
@@ -320,13 +347,16 @@ class UserControllerTest extends TestCase
             'original_name' => 'yoongi11.jpg',
             'user_id' => $user['id']
         ]);
+
         $auth = [
             "email" => $user['email'],
             "password" => '1234'
         ];
 
+        // Realizamos consulta post para iniciar sesión de usuario
         $response = $this->postJson('/api/v1/login', $auth);
 
+        // Esperamos una respuesta con estado 200
         $response->assertOk();
     }
 
@@ -335,6 +365,7 @@ class UserControllerTest extends TestCase
      */
     public function test_list_users(): void
     {
+        // Creamos a usuario con su foto
         $user = User::create(
             [
                 'name' => 'prueba',
@@ -354,20 +385,25 @@ class UserControllerTest extends TestCase
             'original_name' => 'yoongi11.jpg',
             'user_id' => $user['id']
         ]);
+
+
         $auth = [
             "email" => $user['email'],
             "password" => '1234'
         ];
-
+        // Realizamos login
         $response = $this->postJson('/api/v1/login', $auth);
 
         $response->assertOk();
 
         $authorization = $response['authorization'];
+
+        // Realizamos consulta get para obtener a los usuarios
         $response2 = $this->withHeaders([
             'Authorization' => "Bearer " . $authorization['token']
         ])->getJson('/api/v1/users');
 
+        // Esperamos una respuesta de estado 200
         $response2->assertOk();
     }
 
@@ -376,6 +412,7 @@ class UserControllerTest extends TestCase
      */
     public function test_find_user(): void
     {
+        // Creamos a usuario y su foto
         $user = User::create(
             [
                 'name' => 'prueba',
@@ -395,22 +432,26 @@ class UserControllerTest extends TestCase
             'original_name' => 'yoongi11.jpg',
             'user_id' => $user['id']
         ]);
+
         $auth = [
             "email" => $user['email'],
             "password" => '1234'
         ];
 
+        // Realizamos login
         $response = $this->postJson('/api/v1/login', $auth);
 
         $response->assertOk();
 
         $authorization = $response['authorization'];
+
+        // Realizamos consulta get con autorización
         $response2 = $this->withHeaders([
             'Authorization' => "Bearer " . $authorization['token']
         ])->getJson('/api/v1/users/' . $user['id']);
 
+        // Esperamos respuesta con estado 200.
         $response2->assertOk();
-
 
         $response2->assertJsonFragment([
             'id' => $user['id'],
@@ -458,7 +499,7 @@ class UserControllerTest extends TestCase
      */
     public function test_not_found_route(): void
     {
-        $response = $this->getJson('/cualquier-ruta');
+        $response = $this->getJson('/api/cualquier-ruta');
 
         $response->assertStatus(404)->assertJson([
             'message' => 'La ruta que intentas acceder no existe.'

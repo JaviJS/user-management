@@ -13,6 +13,7 @@ cp .env.example .env
 ```
 Configura el archivo .env:
 ```
+APP_URL_COMPLETE=url_servidor
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306

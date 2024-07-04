@@ -14,14 +14,27 @@ class AuthController extends Controller
     {
         $this->authService = $authService;
     }
+
+    /**
+     * Login de un usuario.
+     *
+     * @param  LoginRequest  $request
+     * @return \Illuminate\Http\Response
+     */
     public function logIn(LoginRequest $request)
     {
         $data = $this->authService->logIn($request);
         return response()->json($data->data, $data->status);
     }
+    /**
+     * Logout de un usuario.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function logOut(Request $request)
     {
         $data = $this->authService->logOut($request);
-        return response()->json($data->data, $data->status); 
+        return response()->json($data->data, $data->status);
     }
 }
