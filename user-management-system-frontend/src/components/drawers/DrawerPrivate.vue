@@ -1,8 +1,9 @@
 <template>
   <v-navigation-drawer
     v-model="drawer"
-    :rail="$vuetify.display.xs ? false : props.openDrawer"
-    :permanent="$vuetify.display.xs ? false : true"
+    :rail="!$vuetify.display.xs && props.openDrawer"
+    :permanent="!$vuetify.display.xs"
+    :tempory="$vuetify.display.xs"
   >
     <ListUserInfo
       :title="name"
@@ -45,8 +46,6 @@ const store = useStore();
 const route = useRoute();
 const display = useDisplay();
 
-console.log(display.xs);
-
 const props = defineProps(["openDrawer", "items"]);
 
 const name = store.getters["user/GET_USER"].name;
@@ -54,7 +53,6 @@ const email = store.getters["user/GET_USER"].email;
 const photo_user = store.getters["user/GET_PHOTO_USER"].url;
 
 const drawer = ref(true);
-const drawerSmall = ref(null);
 
 const selectedItem = ref("");
 
@@ -89,16 +87,11 @@ watch(route, (newPath) => {
 watch(
   () => props.openDrawer,
   (newValue) => {
-    console.log("openDrawer:", props.openDrawer);
-    // if (this.$vuetify.breakpoint.xsOnly) {
-    // drawer.value = true;
-    console.log(drawer.value);
-    // }
+    drawer.value = display.xs.value ? newValue : true;
   }
 );
-watch(display.xs.value, (newValue) => {
-  console.log("pantalla:", "new pantalla");
-  // }
+watch(() => display.xs.value, (newValue) => {
+  drawer.value = newValue ? null : props.openDrawer;
 });
 </script>
 <style scoped lang="scss"></style>
