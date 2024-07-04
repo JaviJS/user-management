@@ -1,5 +1,10 @@
 # Mi Sistema de gestión de usuarios - Backend
 
+## Versiones
+| Nombre | Version    |
+|----------|----------|
+| Php      | 8.1      | 
+| Laravel  | 10       | 
 ## Instrucciones de Uso para ejecutar el proyecto sin docker
 
 Primero instalamos las dependencias:

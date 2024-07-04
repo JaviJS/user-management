@@ -1,5 +1,11 @@
 # Mi Sistema de gestión de usuarios - Frontend
 
+## Versiones
+
+| Nombre | Version    |
+|----------|----------|
+| node     | 20.10   | 
+
 ## Instrucciones de Uso para ejecutar el proyecto sin docker
 
 Primero instalamos las dependencias:
