@@ -5,7 +5,7 @@ MAX_ATTEMPTS=10
 ATTEMPT=0
 RETRY_INTERVAL=30  # Intervalo de reintento en segundos
 
-until php artisan migrate:refresh --seed || [ $ATTEMPT -eq $MAX_ATTEMPTS ]; do
+until php artisan migrate:refresh --seed --force || [ $ATTEMPT -eq $MAX_ATTEMPTS ]; do
     echo "Migration attempt failed. Waiting ${RETRY_INTERVAL} seconds before retrying..."
     sleep $RETRY_INTERVAL
     ((ATTEMPT++))

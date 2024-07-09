@@ -24,6 +24,7 @@ services:
       DB_USERNAME: root
       DB_PASSWORD: rootpassword  
       APP_URL_COMPLETE: http://localhost:8000
+      JWT_SECRET: 5roUzpxMfXqDDN3ytktyVEIVE4eF2gh4NyKynlXYEl4UpUjzEWvlRTFeNJ8WxA0Y
     depends_on:
       - database 
     networks:
