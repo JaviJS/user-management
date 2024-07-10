@@ -86,7 +86,7 @@ class CreateUserRequest extends FormRequest
             if (!preg_match('/[0-9]/', $password)) {
                 $validator->errors()->add('password', $messages['number']);
             }
-            if (!preg_match('/[@$!%*?&#]/', $password)) {
+            if (!preg_match('/[@$!%*?&#.]/', $password)) {
                 $validator->errors()->add('password', $messages['symbol']);
             }
             if (preg_match('/\s/', $password)) {

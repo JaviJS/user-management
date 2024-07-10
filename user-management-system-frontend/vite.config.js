@@ -9,15 +9,15 @@ export default defineConfig({
       template: { transformAssetUrls },
     }),
     Vuetify(),
-    ViteFonts({
-      google: {
-        families: [
-          {
-            name: "Roboto",
-            styles: "wght@100;300;400;500;700;900",
-          },
-        ],
-      },
-    }),
+    // ViteFonts({
+    //   google: {
+    //     families: [
+    //       {
+    //         name: "Roboto",
+    //         styles: "wght@100;300;400;500;700;900",
+    //       },
+    //     ],
+    //   },
+    // }),
   ],
 });

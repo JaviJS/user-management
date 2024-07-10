@@ -71,7 +71,7 @@ class UpdatePasswordRequest extends FormRequest
             if (!preg_match('/[0-9]/', $password)) {
                 $validator->errors()->add('new_password', $messages['number']);
             }
-            if (!preg_match('/[@$!%*?&#]/', $password)) {
+            if (!preg_match('/[@$!%*?&#.]/', $password)) {
                 $validator->errors()->add('new_password', $messages['symbol']);
             }
             if (preg_match('/\s/', $password)) {
