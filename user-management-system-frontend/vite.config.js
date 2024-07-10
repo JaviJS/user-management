@@ -8,7 +8,7 @@ export default defineConfig({
     Vue({
       template: { transformAssetUrls },
     }),
-    Vuetify(),
+    Vuetify()
     // ViteFonts({
     //   google: {
     //     families: [
