@@ -18,5 +18,6 @@ fi
 
 echo "Migrations completed successfully."
 
-
+php artisan key:generate
+php artisan storage:link
 php artisan test --stop-on-failure

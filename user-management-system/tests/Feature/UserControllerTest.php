@@ -466,7 +466,7 @@ class UserControllerTest extends TestCase
                 [
                     'id' => $photo_user['id'],
                     'name' => 'yoongi11.jpg',
-                    'url' => 'http://localhost:8000/resources/photo_user/yoongi11.jpg',
+                    'url' => env('APP_URL_COMPLETE') . '/resources/photo_user/yoongi11.jpg',
                     'extension' => 'jpg',
                     'original_name' => 'yoongi11.jpg',
                     'user_id' => $user['id']
